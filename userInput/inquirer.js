@@ -74,6 +74,13 @@ const allQuestions = [...questions, ...followUPQuestions];
 function init() {
     inquirer.prompt(allQuestions).then(async(answers) => {
 
+
+        if(answers.tracker === 'Quit'){
+            console.log('Exiting the app');
+            process.exit(0);
+        }else{
+            init();
+        }
     })
 };
 
