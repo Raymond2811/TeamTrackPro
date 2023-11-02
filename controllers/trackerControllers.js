@@ -29,7 +29,11 @@ const getEmployee = async (req,res) => {
 
 const getRole = async (req,res) => {
     try{
-        const result = await connection.query('SELECT role.title, role.salary, departments.department FROM role JOIN departments ON role.department_id = departments.id;');
+        const result = await connection.query(`
+        SELECT role.title, role.salary, departments.department 
+        FROM role 
+        JOIN departments ON role.department_id = departments.id;
+        `);
         res.json(result[0]);
     }catch(error){
         console.log(error);

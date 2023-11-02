@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const axios = require('axios');
+const { response } = require('express');
 
 const questions = [
     {
@@ -81,19 +82,32 @@ function init() {
             try{
                 const response = await axios.get('http://localhost:3001/api/tracker/'+ answerData[2].toLowerCase());
                 const view = response.data;
-                // const departments = await response.json();
                 console.table(view);
             }catch(error){
                 console.error('Error fetching table:',error);
             }
-        }
+        };
+
+        if(answerData[0] === 'Add'){
+            try{
+                if(answerData[1] === 'Department'){
+                    const newDepartment = answers.departmentName;
+                    await axios.post('http://localhost:3001/api/tracker/' + answerData[1].toLowerCase() + 's',{
+                        newDepartment: newDepartment
+                    });
+                    console.log('Department added successfully');
+                }
+            }catch(error){
+                console.error('Error adding data:', error);
+            }
+        };
 
         if(answers.tracker === 'Quit'){
             console.log('Exiting the app');
             process.exit(0);
         }else{
             init();
-        }
+        };
     })
 };
 
