@@ -53,7 +53,14 @@ const addDepartment = async (req,res) => {
 };
 
 const addRole = async(req,res) => {
-
+    const {roleName, roleSalary, roleDepartment} =req.body;
+    try{
+        const [result] = await connection.query('INSERT INTO role (title, salary, department_id) VALUES (?,?,?);',[roleName, roleSalary, roleDepartment]);
+        res.json(result)
+    }catch(error){
+        console.log(error);
+        res.status(500).json({error});
+    }
 };
 
 module.exports = {
