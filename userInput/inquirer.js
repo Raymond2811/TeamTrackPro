@@ -64,7 +64,7 @@ const followUPQuestions = [
         when: (answers) => answers.tracker === 'Add Role',
     },
     {
-        type:'input',
+        type:'list',
         name:'roleDepartment',
         message:" Enter role's department:",
         when: (answers) => answers.tracker === 'Add Role', 

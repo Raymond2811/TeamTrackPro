@@ -41,8 +41,20 @@ const getRole = async (req,res) => {
     }
 };
 
+const addDepartment = async (req,res) => {
+    const {newDepartment} = req.body;
+    try{
+        const [result] = await connection.query('INSERT INTO departments (department) VALUES (?);', [newDepartment]);
+        res.json(result);
+    }catch(error){
+        console.log(error);
+        res.status(500).json({error});
+    }
+};
+
 module.exports = {
     getDepartments,
     getEmployee,
     getRole,
+    addDepartment,
 }
