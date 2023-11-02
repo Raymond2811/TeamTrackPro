@@ -68,6 +68,15 @@ const followUPQuestions = [
         name:'roleDepartment',
         message:" Enter role's department:",
         when: (answers) => answers.tracker === 'Add Role', 
+        choices: async() => {
+            try{
+                const response = await axios.get('http://localhost:3001/api/tracker/departments');
+                const departments = response.data.map(department => department.department);
+                return departments;
+            }catch(error){
+                console.error('Error fetching departments:', error);
+            }
+        }
     }
 ];
 
