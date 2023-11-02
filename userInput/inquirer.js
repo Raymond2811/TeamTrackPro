@@ -1,4 +1,5 @@
 const inquirer = require('inquirer');
+const axios = require('axios');
 
 const questions = [
     {
@@ -73,7 +74,19 @@ const allQuestions = [...questions, ...followUPQuestions];
 
 function init() {
     inquirer.prompt(allQuestions).then(async(answers) => {
-
+        const answerData = answers.tracker.split(' ');
+        // answer.Data = ['View','All','Departments']
+        
+        if(answerData[0] === 'View'){
+            try{
+                const response = await axios.get('http://localhost:3001/api/tracker/'+ answerData[2].toLowerCase());
+                const departments = response.data;
+                // const departments = await response.json();
+                console.table(departments);
+            }catch(error){
+                console.error('Error fetching departments:',error);
+            }
+        }
 
         if(answers.tracker === 'Quit'){
             console.log('Exiting the app');

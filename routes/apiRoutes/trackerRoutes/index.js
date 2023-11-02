@@ -1,9 +1,14 @@
 const router = require('express').Router();
-const {getDepartments,} = require('../../../controllers/trackerControllers.js')
+const {getDepartments, getEmployee, getRole} = require('../../../controllers/trackerControllers.js');
 
 
 router.route('/departments')
-    .get(getDepartments);
+    .get(getDepartments)
 
+router.route('/employees')
+    .get(getEmployee)
 
+router.route('/roles')
+    .get(getRole)
+    
 module.exports = router;
