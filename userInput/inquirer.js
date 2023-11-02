@@ -80,11 +80,11 @@ function init() {
         if(answerData[0] === 'View'){
             try{
                 const response = await axios.get('http://localhost:3001/api/tracker/'+ answerData[2].toLowerCase());
-                const departments = response.data;
+                const view = response.data;
                 // const departments = await response.json();
-                console.table(departments);
+                console.table(view);
             }catch(error){
-                console.error('Error fetching departments:',error);
+                console.error('Error fetching table:',error);
             }
         }
 

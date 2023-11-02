@@ -13,7 +13,13 @@ const getDepartments = async (req,res) => {
 
 const getEmployee = async (req,res) => {
     try{
-        const result = await connection.query('SELECT * FROM employee;');
+        const result = await connection.query(`
+        SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, departments.department, employee.manager_id
+        FROM employee
+        JOIN role ON employee.role_id = role.id
+        JOIN departments ON role.department_id = departments.id
+        ORDER BY employee.id;
+      `);
         res.json(result[0]);
     }catch(error){
         console.log(error);
@@ -23,7 +29,7 @@ const getEmployee = async (req,res) => {
 
 const getRole = async (req,res) => {
     try{
-        const result = await connection.query('SELECT * FROM role JOIN departments ON role.department_id = departments.id;');
+        const result = await connection.query('SELECT role.title, role.salary, departments.department FROM role JOIN departments ON role.department_id = departments.id;');
         res.json(result[0]);
     }catch(error){
         console.log(error);
