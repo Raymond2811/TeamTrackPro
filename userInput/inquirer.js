@@ -71,8 +71,12 @@ const followUPQuestions = [
         choices: async() => {
             try{
                 const response = await axios.get('http://localhost:3001/api/tracker/departments');
-                const departments = response.data.map(department => department.department);
-                return departments;
+                const departments = response.data;
+                const departmentChoices = departments.map(department => ({
+                    name: department.department,
+                    value: department.id,
+                }));
+                return departmentChoices;
             }catch(error){
                 console.error('Error fetching departments:', error);
             }
@@ -105,6 +109,16 @@ function init() {
                         newDepartment: newDepartment
                     });
                     console.log('Department added successfully');
+                }
+
+                if(answerData[1] === 'Role'){
+                    const { roleName, roleSalary, roleDepartment } = answers;
+                    await axios.post('http://localhost:3001/api/tracker/' + answerData[1].toLowerCase() + 's',{
+                        roleName: roleName,
+                        roleSalary: roleSalary,
+                        roleDepartment: roleDepartment,
+                    });
+                    console.log('Role added successfully');
                 }
             }catch(error){
                 console.error('Error adding data:', error);

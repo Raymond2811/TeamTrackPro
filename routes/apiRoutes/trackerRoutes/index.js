@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {getDepartments, getEmployee, getRole, addDepartment} = require('../../../controllers/trackerControllers.js');
+const {getDepartments, getEmployee, getRole, addDepartment, addRole,} = require('../../../controllers/trackerControllers.js');
 
 
 router.route('/departments')
@@ -11,5 +11,6 @@ router.route('/employees')
 
 router.route('/roles')
     .get(getRole)
+    .post(addRole);
     
 module.exports = router;

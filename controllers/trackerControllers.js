@@ -52,9 +52,14 @@ const addDepartment = async (req,res) => {
     }
 };
 
+const addRole = async(req,res) => {
+
+};
+
 module.exports = {
     getDepartments,
     getEmployee,
     getRole,
     addDepartment,
+    addRole,
 }
