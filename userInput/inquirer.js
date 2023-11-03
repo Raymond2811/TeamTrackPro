@@ -144,6 +144,16 @@ function init() {
                     });
                     console.log('Role added successfully');
                 }
+                if(answerData[1] === 'Employee'){
+                    const {employeeFirstName,employeeLastName,employeeRole,employeeManager} = answers;
+                    await axios.post('http://localhost:3001/api/tracker/' + answerData[1].toLowerCase() + "s",{
+                        firstName: employeeFirstName,
+                        lastName: employeeLastName,
+                        role_id: employeeRole,
+                        manager_id: employeeManager,
+                    });
+                    console.log('Employee added successfully');
+                }
             }catch(error){
                 console.error('Error adding data:', error);
             }
