@@ -1,6 +1,5 @@
 const inquirer = require('inquirer');
 const axios = require('axios');
-const { response } = require('express');
 
 const questions = [
     {
@@ -34,16 +33,42 @@ const followUPQuestions = [
         when: (answers) => answers.tracker === 'Add Employee',
     },
     {
-        type:'input',
+        type:'list',
         name:'employeeRole',
-        message:'Enter role of the employee:',
+        message:"What is the employee's role?",
         when: (answers) => answers.tracker === 'Add Employee',
+        choices: async() => {
+            try{
+                const response = await axios.get('http://localhost:3001/api/tracker/roles');
+                const roles = response.data;
+                const roleChoices = roles.map(role => ({
+                    name:role.title,
+                    value:role.id,
+                }));
+                return roleChoices;
+            }catch(error){
+                console.error('Error fetching roles:', error);
+            }
+        }
     },
     {
-        type:'input',
+        type:'list',
         name:'employeeManager',
-        message: 'Enter manager of the employee:',
+        message: "Who's the employee's manager?",
         when: (answers) => answers.tracker === 'Add Employee',
+        choices: async() => {
+            try {
+                const response = await axios.get('http://localhost:3001/api/tracker/employees');
+                const employees = response.data;
+                const managerChoices = employees.map((employee) => ({
+                    name: `${employee.first_name} ${employee.last_name}`,
+                    value: employee.id,
+                }));
+                return managerChoices;
+            } catch (error) {
+                console.error('Error fetching roles:', error);
+            }
+        }
     },
     {
         type: 'input',
@@ -66,7 +91,7 @@ const followUPQuestions = [
     {
         type:'list',
         name:'roleDepartment',
-        message:" Enter role's department:",
+        message:"Which department does the role belong to?",
         when: (answers) => answers.tracker === 'Add Role', 
         choices: async() => {
             try{
@@ -81,7 +106,7 @@ const followUPQuestions = [
                 console.error('Error fetching departments:', error);
             }
         }
-    }
+    },
 ];
 
 const allQuestions = [...questions, ...followUPQuestions];
@@ -110,7 +135,6 @@ function init() {
                     });
                     console.log('Department added successfully');
                 }
-
                 if(answerData[1] === 'Role'){
                     const { roleName, roleSalary, roleDepartment } = answers;
                     await axios.post('http://localhost:3001/api/tracker/' + answerData[1].toLowerCase() + 's',{
