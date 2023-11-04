@@ -75,6 +75,20 @@ const addEmployee = async(req,res) => {
     }
 };
 
+const updateEmployeeRole = async(req,res) => {
+    const {employeeId, roleId} = req.body;
+    try {
+        const [result] = await connection.query(
+            'UPDATE employee SET role_id = ? WHERE id = ?',
+            [roleId,employeeId,]
+        );
+        res.json(result);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({error});
+    }
+};
+
 module.exports = {
     getDepartments,
     getEmployee,
@@ -82,4 +96,5 @@ module.exports = {
     addDepartment,
     addRole,
     addEmployee,
+    updateEmployeeRole,
 }
