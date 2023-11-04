@@ -59,10 +59,16 @@ const followUPQuestions = [
             try {
                 const response = await axios.get('http://localhost:3001/api/tracker/employees');
                 const employees = response.data;
-                const managerChoices = employees.map((employee) => ({
-                    name: `${employee.first_name} ${employee.last_name}`,
-                    value: employee.id,
-                }));
+                const managerChoices = [
+                    {
+                        name: 'None',
+                        value: null,
+                    },
+                    ...employees.map((employee) => ({
+                        name: `${employee.first_name} ${employee.last_name}`,
+                        value: employee.id,
+                    })),
+                ];
                 return managerChoices;
             } catch (error) {
                 console.error('Error fetching roles:', error);
