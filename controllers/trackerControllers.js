@@ -30,9 +30,10 @@ const getEmployee = async (req,res) => {
 const getRole = async (req,res) => {
     try{
         const result = await connection.query(`
-        SELECT role.title, role.salary, departments.department 
+        SELECT role.id, role.title, role.salary, departments.department 
         FROM role 
-        JOIN departments ON role.department_id = departments.id;
+        JOIN departments ON role.department_id = departments.id
+        ORDER BY role.id;
         `);
         res.json(result[0]);
     }catch(error){
@@ -56,7 +57,7 @@ const addRole = async(req,res) => {
     const {roleName, roleSalary, roleDepartment} =req.body;
     try{
         const [result] = await connection.query('INSERT INTO role (title, salary, department_id) VALUES (?,?,?);',[roleName, roleSalary, roleDepartment]);
-        res.json(result)
+        res.json(result);
     }catch(error){
         console.log(error);
         res.status(500).json({error});
@@ -64,9 +65,9 @@ const addRole = async(req,res) => {
 };
 
 const addEmployee = async(req,res) => {
-    const {firstName, lastName, role_id, manager_id } = req.body;
+    const {first_name, last_name, role_id, manager_id } = req.body;
     try{
-        const [result] = await connection.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?);',[firstName, lastName, role_id, manager_id ]);
+        const [result] = await connection.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?);',[first_name, last_name, role_id, manager_id ]);
         res.json(result);
     }catch(error){
         console.log(error);

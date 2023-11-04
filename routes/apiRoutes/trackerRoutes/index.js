@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {getDepartments, getEmployee, getRole, addDepartment, addRole, addEmployee,} = require('../../../controllers/trackerControllers.js');
+const {getDepartments, getEmployee, getRole, addDepartment, addRole, addEmployee, updateEmployeeRole} = require('../../../controllers/trackerControllers.js');
 
 
 router.route('/departments')
@@ -8,7 +8,8 @@ router.route('/departments')
 
 router.route('/employees')
     .get(getEmployee)
-    .post(addEmployee);
+    .post(addEmployee)
+    .put(updateEmployeeRole);
 
 router.route('/roles')
     .get(getRole)

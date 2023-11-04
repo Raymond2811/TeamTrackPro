@@ -107,6 +107,46 @@ const followUPQuestions = [
             }
         }
     },
+    {
+        type:'list',
+        name:'selectedEmployee',
+        message:"Which employee's role do you want to update?",
+        when:(answers) => answers.tracker === 'Update Employee Role',
+        choices: async() => {
+            try{
+                const response = await axios.get('http://localhost:3001/api/tracker/employees');
+                const employees = response.data;
+
+                const employeeChoices = employees.map((employee) => ({
+                    name: `${employee.first_name} ${employee.last_name}`,
+                    value: employee.id,
+                }));
+                return employeeChoices;
+            }catch (error) {
+                console.error('Error fetching roles:', error);
+            }
+        }
+    },
+    {
+        type:'list',
+        name:'updatedRole',
+        message:"Which role do you want to assign the selected employee?",
+        when:(answers) => answers.tracker === 'Update Employee Role',
+        choices: async() => {
+            try{
+                const response = await axios.get('http://localhost:3001/api/tracker/roles');
+                const roles = response.data;
+
+                const roleChoices = roles.map((role) => ({
+                    name: role.title,
+                    value: role.id,    
+                }));
+                return roleChoices;
+            }catch (error) {
+                console.error('Error fetching roles:', error);
+            }
+        }
+    },
 ];
 
 const allQuestions = [...questions, ...followUPQuestions];
@@ -130,14 +170,14 @@ function init() {
             try{
                 if(answerData[1] === 'Department'){
                     const newDepartment = answers.departmentName;
-                    await axios.post('http://localhost:3001/api/tracker/' + answerData[1].toLowerCase() + 's',{
+                    await axios.post('http://localhost:3001/api/tracker/departments',{
                         newDepartment: newDepartment
                     });
                     console.log('Department added successfully');
                 }
                 if(answerData[1] === 'Role'){
                     const { roleName, roleSalary, roleDepartment } = answers;
-                    await axios.post('http://localhost:3001/api/tracker/' + answerData[1].toLowerCase() + 's',{
+                    await axios.post('http://localhost:3001/api/tracker/roles',{
                         roleName: roleName,
                         roleSalary: roleSalary,
                         roleDepartment: roleDepartment,
@@ -146,9 +186,9 @@ function init() {
                 }
                 if(answerData[1] === 'Employee'){
                     const {employeeFirstName,employeeLastName,employeeRole,employeeManager} = answers;
-                    await axios.post('http://localhost:3001/api/tracker/' + answerData[1].toLowerCase() + "s",{
-                        firstName: employeeFirstName,
-                        lastName: employeeLastName,
+                    await axios.post('http://localhost:3001/api/tracker/employees',{
+                        first_name: employeeFirstName,
+                        last_name: employeeLastName,
                         role_id: employeeRole,
                         manager_id: employeeManager,
                     });
