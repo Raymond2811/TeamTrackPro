@@ -199,6 +199,19 @@ function init() {
             }
         };
 
+        if(answerData[0] === 'Update'){
+            try{
+                const {selectedEmployee,updatedRole} = answers;
+                await axios.put('http://localhost:3001/api/tracker/employees',{
+                    employeeId: selectedEmployee,
+                    roleId: updatedRole,
+                });
+                console.log('Employee role updated successfully');
+            }catch(error){
+                console.error('Error updating employee:',error);
+            }
+        };
+
         if(answers.tracker === 'Quit'){
             console.log('Exiting the app');
             process.exit(0);
