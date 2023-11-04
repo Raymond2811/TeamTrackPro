@@ -21,29 +21,29 @@ function init() {
             try{
                 if(answerData[1] === 'Department'){
                     const newDepartment = answers.departmentName;
-                    await axios.post('http://localhost:3001/api/tracker/departments',{
+                    const response = await axios.post('http://localhost:3001/api/tracker/departments',{
                         newDepartment: newDepartment
                     });
-                    console.log('Department added successfully');
+                    console.log(response.data.message);
                 }
                 if(answerData[1] === 'Role'){
                     const { roleName, roleSalary, roleDepartment } = answers;
-                    await axios.post('http://localhost:3001/api/tracker/roles',{
+                    const response = await axios.post('http://localhost:3001/api/tracker/roles',{
                         roleName: roleName,
                         roleSalary: roleSalary,
                         roleDepartment: roleDepartment,
                     });
-                    console.log('Role added successfully');
+                    console.log(response.data.message);
                 }
                 if(answerData[1] === 'Employee'){
                     const {employeeFirstName,employeeLastName,employeeRole,employeeManager} = answers;
-                    await axios.post('http://localhost:3001/api/tracker/employees',{
+                    const response = await axios.post('http://localhost:3001/api/tracker/employees',{
                         first_name: employeeFirstName,
                         last_name: employeeLastName,
                         role_id: employeeRole,
                         manager_id: employeeManager,
                     });
-                    console.log('Employee added successfully');
+                    console.log(response.data.message);
                 }
             }catch(error){
                 console.error('Error adding data:', error);
@@ -53,11 +53,11 @@ function init() {
         if(answerData[0] === 'Update'){
             try{
                 const {selectedEmployee,updatedRole} = answers;
-                await axios.put('http://localhost:3001/api/tracker/employees',{
+                const response = await axios.put('http://localhost:3001/api/tracker/employees',{
                     employeeId: selectedEmployee,
                     roleId: updatedRole,
                 });
-                console.log('Employee role updated successfully');
+                console.log(response.data.message);
             }catch(error){
                 console.error('Error updating employee:',error);
             }

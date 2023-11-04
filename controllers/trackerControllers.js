@@ -46,7 +46,7 @@ const addDepartment = async (req,res) => {
     const {newDepartment} = req.body;
     try{
         const [result] = await connection.query('INSERT INTO departments (department) VALUES (?);', [newDepartment]);
-        res.json(result);
+        res.json({ message: 'Department added successfully', result });
     }catch(error){
         console.log(error);
         res.status(500).json({error});
@@ -57,7 +57,7 @@ const addRole = async(req,res) => {
     const {roleName, roleSalary, roleDepartment} =req.body;
     try{
         const [result] = await connection.query('INSERT INTO role (title, salary, department_id) VALUES (?,?,?);',[roleName, roleSalary, roleDepartment]);
-        res.json(result);
+        res.json({ message: 'Role added successfully', result });
     }catch(error){
         console.log(error);
         res.status(500).json({error});
@@ -68,7 +68,7 @@ const addEmployee = async(req,res) => {
     const {first_name, last_name, role_id, manager_id } = req.body;
     try{
         const [result] = await connection.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?);',[first_name, last_name, role_id, manager_id ]);
-        res.json(result);
+        res.json({ message: 'Employee added successfully', result });
     }catch(error){
         console.log(error);
         res.status(500).json({error});
@@ -82,7 +82,7 @@ const updateEmployeeRole = async(req,res) => {
             'UPDATE employee SET role_id = ? WHERE id = ?',
             [roleId,employeeId,]
         );
-        res.json(result);
+        res.json({ message: 'Employee updated successfully', result });
     } catch (error) {
         console.log(error);
         res.status(500).json({error});
